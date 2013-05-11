@@ -27,6 +27,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import static org.fest.assertions.api.Assertions.assertThat;
+import static org.fest.assertions.api.Assertions.extractProperty;
 
 /**
  * @author @obazoud (Olivier Bazoud)
@@ -62,6 +63,7 @@ public class SpringBatchMetricsTest {
         .containsKey("batch.sampleJob.job.metered")
         .containsKey("batch.sampleJob.step.firstStep.step.metered")
         .containsKey("batch.sampleJob.step.secondStep.step.metered");
+    assertThat(extractProperty("count", Number.class).from(meters.values())).contains(1L).doesNotContain(0L);
     Map<String, Timer> timers = metricRegistry.getTimers();
     assertThat(timers).hasSize(5);
     assertThat(timers)
@@ -70,6 +72,7 @@ public class SpringBatchMetricsTest {
         .containsKey("batch.sampleJob.step.firstStep.chunk.timed")
         .containsKey("batch.sampleJob.step.secondStep.step.timed")
         .containsKey("batch.sampleJob.step.secondStep.chunk.timed");
+    assertThat(extractProperty("count", Number.class).from(timers.values())).contains(1L).doesNotContain(0L);
     Map<String, Gauge> gauges = metricRegistry.getGauges();
     assertThat(gauges).hasSize(0);
   }

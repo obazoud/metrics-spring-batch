@@ -14,6 +14,7 @@
   <artifactId>metrics-spring-batch</artifactId>
   <name>Metrics Spring Batch extension</name>
   <description>Spring Batch extension for Yammer's Metrics library</description>
+  <url>https://github.com/obazoud/metrics-spring-batch</url>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
   <developers>

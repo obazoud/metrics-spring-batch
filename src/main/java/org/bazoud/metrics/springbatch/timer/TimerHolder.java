@@ -34,7 +34,9 @@ public class TimerHolder implements DisposableBean {
   }
 
   public void stop(String jobName, String stepName, String kind) {
-    String metricName = name(group, jobName, STEP_KIND, stepName, kind, TIMED_KIND);
+    String metricName = stepName == null ?
+        name(group, jobName, kind, TIMED_KIND) :
+        name(group, jobName, STEP_KIND, stepName, kind, TIMED_KIND);
     Timer.Context timerContext = timerContexts.get(metricName);
     if (timerContext != null) {
       timerContext.stop();
