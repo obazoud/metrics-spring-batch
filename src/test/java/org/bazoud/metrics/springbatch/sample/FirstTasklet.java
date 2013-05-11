@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 public class FirstTasklet implements Tasklet {
   @Override
   public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-    Thread.sleep(100);
     return RepeatStatus.FINISHED;
   }
 }
