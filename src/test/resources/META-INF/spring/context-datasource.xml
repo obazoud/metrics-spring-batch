@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
+
+  <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"
+        p:driverClassName="${dataSource.driverClassName}"
+        p:initialSize="${dataSource.initialSize}"
+        p:maxIdle="${dataSource.maxIdle}"
+        p:maxWait="${dataSource.maxWait}"
+        p:maxActive="${dataSource.maxActive}"
+        p:minEvictableIdleTimeMillis="${dataSource.minEvictableIdleTimeMillis}"
+        p:timeBetweenEvictionRunsMillis="${dataSource.timeBetweenEvictionRunsMillis}"
+        p:url="${dataSource.url}"
+        p:username="${dataSource.username}"
+        p:password="${dataSource.password}"
+        p:accessToUnderlyingConnectionAllowed="true"/>
+
+
+  <jdbc:initialize-database data-source="dataSource">
+    <jdbc:script location="classpath:org/springframework/batch/core/schema-drop-h2.sql" />
+    <jdbc:script location="classpath:org/springframework/batch/core/schema-h2.sql" />
+  </jdbc:initialize-database>
+
+  <!-- MBean config -->
+  <bean id="mbeanServer" class="org.springframework.jmx.support.MBeanServerFactoryBean" destroy-method="destroy">
+    <property name="locateExistingServerIfPossible" value="true" />
+  </bean>
+
+  <bean id="mbeanExporter" class="org.springframework.jmx.export.MBeanExporter" destroy-method="destroy">
+    <property name="assembler">
+      <bean class="org.springframework.jmx.export.assembler.MethodNameBasedMBeanInfoAssembler">
+        <property name="managedMethods">
+          <list>
+            <value>getNumActive</value>
+            <value>getMaxActive</value>
+            <value>getNumIdle</value>
+          </list>
+        </property>
+        <property name="useStrictCasing" value="false" />
+      </bean>
+    </property>
+    <property name="beans">
+      <map>
+        <entry key="javax.sql:type=DataSource,name=DataSource" value-ref="dataSource"/>
+      </map>
+    </property>
+    <property name="server" ref="mbeanServer" />
+    <property name="registrationBehaviorName" value="REGISTRATION_REPLACE_EXISTING"/>
+  </bean>
+
+</beans>

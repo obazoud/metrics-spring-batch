@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
+
+  <bean class="org.springframework.batch.test.JobLauncherTestUtils" />
+
+  <job id="sampleJob" xmlns="http://www.springframework.org/schema/batch" parent="instrumentedJob">
+    <step id="chunkStep" parent="instrumentedStep">
+      <tasklet>
+        <chunk reader="myItemReader"
+               processor="myItemProcessor"
+               writer="myItemWriter" />
+      </tasklet>
+    </step>
+  </job>
+
+</beans>
