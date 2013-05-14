@@ -1,6 +1,8 @@
 Metrics for Spring Batch
 -------
 
+[Spring Batch extension](http://static.springsource.org/spring-batch/) for [Yammer's Metrics](http://metrics.codahale.com/) library
+
 [![Build Status](https://buildhive.cloudbees.com/job/obazoud/job/metrics-spring-batch/badge/icon)](https://buildhive.cloudbees.com/job/obazoud/job/metrics-spring-batch/)
 
 About
