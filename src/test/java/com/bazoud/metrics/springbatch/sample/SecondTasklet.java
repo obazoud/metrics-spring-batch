@@ -1,4 +1,4 @@
-package org.bazoud.metrics.springbatch.sample;
+package com.bazoud.metrics.springbatch.sample;
 
 
 import org.springframework.batch.core.StepContribution;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  * @author @obazoud (Olivier Bazoud)
  */
 @Component
-public class FirstTasklet implements Tasklet {
+public class SecondTasklet implements Tasklet {
   @Override
   public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
     return RepeatStatus.FINISHED;

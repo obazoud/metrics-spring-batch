@@ -1,14 +1,14 @@
-package org.bazoud.metrics.springbatch.timer;
+package com.bazoud.metrics.springbatch.timer;
 
+import org.springframework.batch.core.ChunkListener;
 import org.springframework.batch.core.ExitStatus;
-import org.springframework.batch.core.ItemReadListener;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import static org.bazoud.metrics.springbatch.MetricsHelper.READ_KIND;
+import static com.bazoud.metrics.springbatch.MetricsHelper.CHUNK_KIND;
 
 /**
  * @author @obazoud (Olivier Bazoud)
@@ -16,27 +16,23 @@ import static org.bazoud.metrics.springbatch.MetricsHelper.READ_KIND;
 
 @Component
 @Order(value = 1)
-public class TimedItemReadListener implements ItemReadListener, StepExecutionListener {
+public class TimedChunkListener implements ChunkListener, StepExecutionListener {
   @Autowired
   private TimerHolder timerHolder;
   private StepExecution stepExecution;
 
   @Override
-  public void beforeRead() {
+  public void beforeChunk() {
     String jobName = stepExecution.getJobExecution().getJobInstance().getJobName();
     String stepName = stepExecution.getStepName();
-    timerHolder.time(jobName, stepName, READ_KIND);
+    timerHolder.time(jobName, stepName, CHUNK_KIND);
   }
 
   @Override
-  public void afterRead(Object item) {
+  public void afterChunk() {
     String jobName = stepExecution.getJobExecution().getJobInstance().getJobName();
     String stepName = stepExecution.getStepName();
-    timerHolder.stop(jobName, stepName, READ_KIND);
-  }
-
-  @Override
-  public void onReadError(Exception ex) {
+    timerHolder.stop(jobName, stepName, CHUNK_KIND);
   }
 
   @Override
@@ -52,4 +48,5 @@ public class TimedItemReadListener implements ItemReadListener, StepExecutionLis
   public void setTimerHolder(TimerHolder timerHolder) {
     this.timerHolder = timerHolder;
   }
+
 }

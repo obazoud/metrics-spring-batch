@@ -1,8 +1,7 @@
-package org.bazoud.metrics.springbatch.meter;
+package com.bazoud.metrics.springbatch.meter;
 
 import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.Timer;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -11,10 +10,10 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.codahale.metrics.MetricRegistry.name;
-import static org.bazoud.metrics.springbatch.MetricsHelper.JOB_KIND;
-import static org.bazoud.metrics.springbatch.MetricsHelper.METERED_KIND;
-import static org.bazoud.metrics.springbatch.MetricsHelper.METRICS_BATCH_GROUP;
-import static org.bazoud.metrics.springbatch.MetricsHelper.STEP_KIND;
+import static com.bazoud.metrics.springbatch.MetricsHelper.JOB_KIND;
+import static com.bazoud.metrics.springbatch.MetricsHelper.METERED_KIND;
+import static com.bazoud.metrics.springbatch.MetricsHelper.METRICS_BATCH_GROUP;
+import static com.bazoud.metrics.springbatch.MetricsHelper.STEP_KIND;
 
 /**
  * @author @obazoud (Olivier Bazoud)

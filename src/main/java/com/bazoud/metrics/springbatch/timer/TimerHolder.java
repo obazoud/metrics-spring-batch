@@ -1,4 +1,4 @@
-package org.bazoud.metrics.springbatch.timer;
+package com.bazoud.metrics.springbatch.timer;
 
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.Timer;
@@ -10,9 +10,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.codahale.metrics.MetricRegistry.name;
-import static org.bazoud.metrics.springbatch.MetricsHelper.METRICS_BATCH_GROUP;
-import static org.bazoud.metrics.springbatch.MetricsHelper.STEP_KIND;
-import static org.bazoud.metrics.springbatch.MetricsHelper.TIMED_KIND;
+import static com.bazoud.metrics.springbatch.MetricsHelper.METRICS_BATCH_GROUP;
+import static com.bazoud.metrics.springbatch.MetricsHelper.STEP_KIND;
+import static com.bazoud.metrics.springbatch.MetricsHelper.TIMED_KIND;
 
 /**
  * @author @obazoud (Olivier Bazoud)

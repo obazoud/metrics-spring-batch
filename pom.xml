@@ -10,7 +10,7 @@
     <artifactId>oss-parent</artifactId>
     <version>7</version>
   </parent>
-  <groupId>org.bazoud.metrics</groupId>
+  <groupId>com.bazoud.metrics</groupId>
   <artifactId>metrics-spring-batch</artifactId>
   <name>Metrics Spring Batch extension</name>
   <description>Spring Batch extension for Yammer's Metrics library</description>

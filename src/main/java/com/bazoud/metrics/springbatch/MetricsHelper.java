@@ -1,4 +1,4 @@
-package org.bazoud.metrics.springbatch;
+package com.bazoud.metrics.springbatch;
 
 /**
  * @author @obazoud (Olivier Bazoud)

@@ -1,14 +1,14 @@
-package org.bazoud.metrics.springbatch.timer;
+package com.bazoud.metrics.springbatch.timer;
 
 import org.springframework.batch.core.ExitStatus;
-import org.springframework.batch.core.ItemProcessListener;
+import org.springframework.batch.core.ItemReadListener;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import static org.bazoud.metrics.springbatch.MetricsHelper.PROCESS_KIND;
+import static com.bazoud.metrics.springbatch.MetricsHelper.READ_KIND;
 
 /**
  * @author @obazoud (Olivier Bazoud)
@@ -16,27 +16,27 @@ import static org.bazoud.metrics.springbatch.MetricsHelper.PROCESS_KIND;
 
 @Component
 @Order(value = 1)
-public class TimedItemProcessListener implements ItemProcessListener, StepExecutionListener {
+public class TimedItemReadListener implements ItemReadListener, StepExecutionListener {
   @Autowired
   private TimerHolder timerHolder;
   private StepExecution stepExecution;
 
   @Override
-  public void beforeProcess(Object item) {
+  public void beforeRead() {
     String jobName = stepExecution.getJobExecution().getJobInstance().getJobName();
     String stepName = stepExecution.getStepName();
-    timerHolder.time(jobName, stepName, PROCESS_KIND);
+    timerHolder.time(jobName, stepName, READ_KIND);
   }
 
   @Override
-  public void afterProcess(Object item, Object result) {
+  public void afterRead(Object item) {
     String jobName = stepExecution.getJobExecution().getJobInstance().getJobName();
     String stepName = stepExecution.getStepName();
-    timerHolder.stop(jobName, stepName, PROCESS_KIND);
+    timerHolder.stop(jobName, stepName, READ_KIND);
   }
 
   @Override
-  public void onProcessError(Object item, Exception e) {
+  public void onReadError(Exception ex) {
   }
 
   @Override
@@ -52,5 +52,4 @@ public class TimedItemProcessListener implements ItemProcessListener, StepExecut
   public void setTimerHolder(TimerHolder timerHolder) {
     this.timerHolder = timerHolder;
   }
-
 }

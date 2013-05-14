@@ -1,6 +1,5 @@
-package org.bazoud.metrics.springbatch.sample;
+package com.bazoud.metrics.springbatch.sample;
 
-import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.stereotype.Component;
 

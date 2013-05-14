@@ -1,12 +1,10 @@
-package org.bazoud.metrics.springbatch;
+package com.bazoud.metrics.springbatch;
 
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.Gauge;
 import com.codahale.metrics.Meter;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.Timer;
-import org.fest.assertions.api.Assertions;
-import org.hamcrest.MatcherAssert;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -23,7 +21,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import static org.fest.assertions.api.Assertions.assertThat;
@@ -34,11 +31,12 @@ import static org.fest.assertions.api.Assertions.extractProperty;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
-public class SpringBatchMetricsTest {
+public class ChunkMetricsTest {
   @Autowired
   private JobLauncherTestUtils jobLauncherTestUtils;
   @Autowired
   private MetricRegistry metricRegistry;
+
   private ConsoleReporter reporter = ConsoleReporter.forRegistry(metricRegistry)
       .build();
 
@@ -58,21 +56,21 @@ public class SpringBatchMetricsTest {
     JobExecution jobExecution = jobLauncherTestUtils.launchJob(new JobParameters(parameters));
     Assert.assertEquals(jobExecution.getExitStatus().getExitDescription(), BatchStatus.COMPLETED, jobExecution.getStatus());
     Map<String, Meter> meters = metricRegistry.getMeters();
-    assertThat(meters).hasSize(3);
+    assertThat(meters).hasSize(2);
     assertThat(meters)
         .containsKey("batch.sampleJob.job.metered")
-        .containsKey("batch.sampleJob.step.firstStep.step.metered")
-        .containsKey("batch.sampleJob.step.secondStep.step.metered");
+        .containsKey("batch.sampleJob.step.chunkStep.step.metered");
     assertThat(extractProperty("count", Number.class).from(meters.values())).contains(1L).doesNotContain(0L);
     Map<String, Timer> timers = metricRegistry.getTimers();
-    assertThat(timers).hasSize(5);
+    assertThat(timers).hasSize(6);
     assertThat(timers)
         .containsKey("batch.sampleJob.job.timed")
-        .containsKey("batch.sampleJob.step.firstStep.step.timed")
-        .containsKey("batch.sampleJob.step.firstStep.chunk.timed")
-        .containsKey("batch.sampleJob.step.secondStep.step.timed")
-        .containsKey("batch.sampleJob.step.secondStep.chunk.timed");
-    assertThat(extractProperty("count", Number.class).from(timers.values())).contains(1L).doesNotContain(0L);
+        .containsKey("batch.sampleJob.step.chunkStep.chunk.timed")
+        .containsKey("batch.sampleJob.step.chunkStep.step.timed")
+        .containsKey("batch.sampleJob.step.chunkStep.read.timed")
+        .containsKey("batch.sampleJob.step.chunkStep.process.timed")
+        .containsKey("batch.sampleJob.step.chunkStep.write.timed");
+    assertThat(extractProperty("count", Number.class).from(timers.values())).contains(1L, 3L, 4L).doesNotContain(0L);
     Map<String, Gauge> gauges = metricRegistry.getGauges();
     assertThat(gauges).hasSize(0);
   }

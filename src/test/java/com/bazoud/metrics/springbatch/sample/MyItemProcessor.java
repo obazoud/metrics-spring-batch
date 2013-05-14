@@ -1,4 +1,4 @@
-package org.bazoud.metrics.springbatch.sample;
+package com.bazoud.metrics.springbatch.sample;
 
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
