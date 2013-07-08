@@ -4,6 +4,7 @@ import org.springframework.batch.core.ChunkListener;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.StepExecutionListener;
+import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -22,14 +23,21 @@ public class TimedChunkListener implements ChunkListener, StepExecutionListener 
   private StepExecution stepExecution;
 
   @Override
-  public void beforeChunk() {
+  public void beforeChunk(ChunkContext context) {
     String jobName = stepExecution.getJobExecution().getJobInstance().getJobName();
     String stepName = stepExecution.getStepName();
     timerHolder.time(jobName, stepName, CHUNK_KIND);
   }
 
   @Override
-  public void afterChunk() {
+  public void afterChunk(ChunkContext context) {
+    String jobName = stepExecution.getJobExecution().getJobInstance().getJobName();
+    String stepName = stepExecution.getStepName();
+    timerHolder.stop(jobName, stepName, CHUNK_KIND);
+  }
+
+  @Override
+  public void afterChunkError(ChunkContext context) {
     String jobName = stepExecution.getJobExecution().getJobInstance().getJobName();
     String stepName = stepExecution.getStepName();
     timerHolder.stop(jobName, stepName, CHUNK_KIND);

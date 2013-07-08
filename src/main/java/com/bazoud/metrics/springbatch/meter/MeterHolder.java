@@ -24,7 +24,7 @@ public class MeterHolder implements DisposableBean {
   private MetricRegistry metricRegistry;
   private String group = METRICS_BATCH_GROUP;
 
-  private Map<String, Meter> meters = new ConcurrentHashMap<>();
+  private Map<String, Meter> meters = new ConcurrentHashMap();
 
   public void mark(String jobName) {
     mark(jobName, null);
