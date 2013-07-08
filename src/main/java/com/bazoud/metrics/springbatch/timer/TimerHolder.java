@@ -22,7 +22,7 @@ public class TimerHolder implements DisposableBean {
   @Autowired
   private MetricRegistry metricRegistry;
   private String group = METRICS_BATCH_GROUP;
-  private Map<String, Timer.Context> timerContexts = new ConcurrentHashMap();
+  private Map<String, Timer.Context> timerContexts = new ConcurrentHashMap<>();
 
   public void time(String jobName, String stepName, String kind) {
     String metricName = stepName == null ?
