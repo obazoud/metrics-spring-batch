@@ -272,7 +272,7 @@
     </pluginManagement>
   </build>
   <properties>
-    <springbatch.version>2.2.1.RELEASE</springbatch.version>
+    <springbatch.version>2.2.3.RELEASE</springbatch.version>
     <springframework.version>3.1.4.RELEASE</springframework.version>
     <metrics.version>3.0.1</metrics.version>
     <maven.version>3.0</maven.version>
