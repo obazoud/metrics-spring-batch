@@ -20,36 +20,46 @@ import static com.bazoud.metrics.springbatch.MetricsHelper.CHUNK_KIND;
 public class TimedChunkListener implements ChunkListener, StepExecutionListener {
   @Autowired
   private TimerHolder timerHolder;
-  private StepExecution stepExecution;
+  private StepExecutionHolder stepExecutionHolder = new StepExecutionHolder();
 
   @Override
   public void beforeChunk(ChunkContext context) {
-    String jobName = stepExecution.getJobExecution().getJobInstance().getJobName();
-    String stepName = stepExecution.getStepName();
-    timerHolder.time(jobName, stepName, CHUNK_KIND);
+    StepExecution stepExecution = stepExecutionHolder.getCurrent();
+    if (stepExecution != null) {
+      String jobName = stepExecution.getJobExecution().getJobInstance().getJobName();
+      String stepName = stepExecution.getStepName();
+      timerHolder.time(jobName, stepName, CHUNK_KIND);
+    }
   }
 
   @Override
   public void afterChunk(ChunkContext context) {
-    String jobName = stepExecution.getJobExecution().getJobInstance().getJobName();
-    String stepName = stepExecution.getStepName();
-    timerHolder.stop(jobName, stepName, CHUNK_KIND);
+    StepExecution stepExecution = stepExecutionHolder.getCurrent();
+    if (stepExecution != null) {
+      String jobName = stepExecution.getJobExecution().getJobInstance().getJobName();
+      String stepName = stepExecution.getStepName();
+      timerHolder.stop(jobName, stepName, CHUNK_KIND);
+    }
   }
 
   @Override
   public void afterChunkError(ChunkContext context) {
-    String jobName = stepExecution.getJobExecution().getJobInstance().getJobName();
-    String stepName = stepExecution.getStepName();
-    timerHolder.stop(jobName, stepName, CHUNK_KIND);
+    StepExecution stepExecution = stepExecutionHolder.getCurrent();
+    if (stepExecution != null) {
+      String jobName = stepExecution.getJobExecution().getJobInstance().getJobName();
+      String stepName = stepExecution.getStepName();
+      timerHolder.stop(jobName, stepName, CHUNK_KIND);
+    }
   }
 
   @Override
   public void beforeStep(StepExecution stepExecution) {
-    this.stepExecution = stepExecution;
+    stepExecutionHolder.before(stepExecution);
   }
 
   @Override
   public ExitStatus afterStep(StepExecution stepExecution) {
+    stepExecutionHolder.after(stepExecution);
     return null;
   }
 
@@ -57,4 +67,11 @@ public class TimedChunkListener implements ChunkListener, StepExecutionListener 
     this.timerHolder = timerHolder;
   }
 
+  public StepExecutionHolder getStepExecutionHolder() {
+    return stepExecutionHolder;
+  }
+
+  public void setStepExecutionHolder(StepExecutionHolder stepExecutionHolder) {
+    this.stepExecutionHolder = stepExecutionHolder;
+  }
 }

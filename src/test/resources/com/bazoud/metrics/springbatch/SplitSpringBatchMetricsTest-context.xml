@@ -3,14 +3,12 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
-  <bean id="sampleJobLauncherTestUtils" class="org.springframework.batch.test.JobLauncherTestUtils">
-    <property name="job" ref="sampleJob"/>
+  <bean id="splitJobLauncherTestUtils" class="org.springframework.batch.test.JobLauncherTestUtils">
+    <property name="job" ref="splitJob"/>
   </bean>
-
   <context:property-placeholder location="classpath:config/common.properties"/>
   <import resource="classpath:META-INF/spring/*.xml" />
   <import resource="classpath:META-INF/spring/batch/batch-infrastructure.xml" />
   <import resource="classpath:META-INF/spring/batch/batch-metrics.xml" />
   <import resource="classpath:META-INF/spring/batch/batch-sample.xml" />
-
 </beans>

@@ -20,20 +20,26 @@ import static com.bazoud.metrics.springbatch.MetricsHelper.WRITE_KIND;
 public class TimedItemWriteListener implements ItemWriteListener, StepExecutionListener {
   @Autowired
   private TimerHolder timerHolder;
-  private StepExecution stepExecution;
+  private StepExecutionHolder stepExecutionHolder = new StepExecutionHolder();
 
   @Override
   public void beforeWrite(List items) {
-    String jobName = stepExecution.getJobExecution().getJobInstance().getJobName();
-    String stepName = stepExecution.getStepName();
-    timerHolder.time(jobName, stepName, WRITE_KIND);
+    StepExecution stepExecution = stepExecutionHolder.getCurrent();
+    if (stepExecution != null) {
+      String jobName = stepExecution.getJobExecution().getJobInstance().getJobName();
+      String stepName = stepExecution.getStepName();
+      timerHolder.time(jobName, stepName, WRITE_KIND);
+    }
   }
 
   @Override
   public void afterWrite(List items) {
-    String jobName = stepExecution.getJobExecution().getJobInstance().getJobName();
-    String stepName = stepExecution.getStepName();
-    timerHolder.stop(jobName, stepName, WRITE_KIND);
+    StepExecution stepExecution = stepExecutionHolder.getCurrent();
+    if (stepExecution != null) {
+      String jobName = stepExecution.getJobExecution().getJobInstance().getJobName();
+      String stepName = stepExecution.getStepName();
+      timerHolder.stop(jobName, stepName, WRITE_KIND);
+    }
   }
 
   @Override
@@ -42,11 +48,12 @@ public class TimedItemWriteListener implements ItemWriteListener, StepExecutionL
 
   @Override
   public void beforeStep(StepExecution stepExecution) {
-    this.stepExecution = stepExecution;
+    this.stepExecutionHolder.before(stepExecution);
   }
 
   @Override
   public ExitStatus afterStep(StepExecution stepExecution) {
+    this.stepExecutionHolder.after(stepExecution);
     return null;
   }
 
@@ -54,4 +61,11 @@ public class TimedItemWriteListener implements ItemWriteListener, StepExecutionL
     this.timerHolder = timerHolder;
   }
 
+  public StepExecutionHolder getStepExecutionHolder() {
+    return stepExecutionHolder;
+  }
+
+  public void setStepExecutionHolder(StepExecutionHolder stepExecutionHolder) {
+    this.stepExecutionHolder = stepExecutionHolder;
+  }
 }
