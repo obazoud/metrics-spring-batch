@@ -4,8 +4,6 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch.xsd">
 
-  <bean class="org.springframework.batch.test.JobLauncherTestUtils" />
-
   <job id="sampleJob" xmlns="http://www.springframework.org/schema/batch" parent="instrumentedJob">
     <step id="firstStep" parent="instrumentedStep">
       <tasklet ref="firstTasklet" />
@@ -16,5 +14,18 @@
       <tasklet ref="secondTasklet" />
     </step>
   </job>
-
+  <job id="splitJob" xmlns="http://www.springframework.org/schema/batch" parent="instrumentedJob">
+    <split id="splitFlow" task-executor="taskExecutor">
+      <flow>
+        <step id="firstSplitStep" parent="instrumentedStep">
+          <tasklet ref="firstTasklet" />
+        </step>
+      </flow>
+      <flow>
+        <step id="secondSplitStep" parent="instrumentedStep">
+          <tasklet ref="secondTasklet" />
+        </step>
+      </flow>
+    </split>
+  </job>
 </beans>

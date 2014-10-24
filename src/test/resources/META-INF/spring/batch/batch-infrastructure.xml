@@ -27,5 +27,5 @@
     p:transactionManager-ref="transactionManager" />
 
   <bean class="org.springframework.batch.core.scope.StepScope" />
-
+  <bean id="taskExecutor" class="org.springframework.core.task.SimpleAsyncTaskExecutor"/>
 </beans>
