@@ -116,8 +116,13 @@
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
-        <version>4.11</version>
+        <version>4.12</version>
         <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>commons-dbcp</groupId>
+        <artifactId>commons-dbcp</artifactId>
+        <version>1.4</version>
       </dependency>
       <dependency>
         <groupId>ch.qos.logback</groupId>
@@ -157,6 +162,10 @@
       <artifactId>spring-jdbc</artifactId>
     </dependency>
     <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.springframework.batch</groupId>
       <artifactId>spring-batch-infrastructure</artifactId>
     </dependency>
@@ -171,6 +180,10 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>commons-dbcp</groupId>
+      <artifactId>commons-dbcp</artifactId>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
@@ -272,8 +285,8 @@
     </pluginManagement>
   </build>
   <properties>
-    <springbatch.version>2.2.3.RELEASE</springbatch.version>
-    <springframework.version>3.1.4.RELEASE</springframework.version>
+    <springbatch.version>3.0.7.RELEASE</springbatch.version>
+    <springframework.version>4.3.3.RELEASE</springframework.version>
     <metrics.version>3.0.1</metrics.version>
     <maven.version>3.0</maven.version>
   </properties>
