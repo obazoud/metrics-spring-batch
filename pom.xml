@@ -62,7 +62,7 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>com.codahale.metrics</groupId>
+        <groupId>io.dropwizard.metrics</groupId>
         <artifactId>metrics-core</artifactId>
         <version>${metrics.version}</version>
       </dependency>
@@ -146,7 +146,7 @@
   </dependencyManagement>
   <dependencies>
     <dependency>
-      <groupId>com.codahale.metrics</groupId>
+      <groupId>io.dropwizard.metrics</groupId>
       <artifactId>metrics-core</artifactId>
     </dependency>
     <dependency>
@@ -287,7 +287,7 @@
   <properties>
     <springbatch.version>3.0.7.RELEASE</springbatch.version>
     <springframework.version>4.3.3.RELEASE</springframework.version>
-    <metrics.version>3.0.1</metrics.version>
+    <metrics.version>3.1.2</metrics.version>
     <maven.version>3.0</maven.version>
   </properties>
 </project>
